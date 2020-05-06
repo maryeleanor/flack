@@ -1,0 +1,44 @@
+notes
+
+
+    // // keep submit button diabled unless there's text in input
+    // document.querySelector('#submit').disabled = true;
+    // document.querySelector('#input').onkeyup = () => {
+    //     if (document.querySelector('#input').value.length > 0)
+    //         document.querySelector('#submit').disabled = false;
+    //     else
+    //         document.querySelector('#submit').disabled = true;
+    // };
+
+    // //connect to websocket
+    // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+
+    // when form submitted
+    // document.querySelector('#form').onsubmit = () => {
+
+    //     const request = new XMLHttpRequest();
+    //     const input = document.querySelector('#input').value;
+    //     request.open('POST', '/chat');
+
+    //     request.onload = () => {
+    //         const data = JSON.parse(request.responseText);
+
+    //         if (data.success) {
+    //             const contents = `<p> ${data.chats} </p>`
+    //             document.querySelector('#result').innerHTML = contents;
+    //             document.querySelector('#input').value = "";
+    //         }
+    //         else {
+    //             document.querySelector('#result').innerHTML = 'There was an error.';
+    //         }
+    //     }
+
+    //     const data = new FormData();
+    //     data.append('input', input);
+
+    //     request.send(data); 
+    //     return false;
+
+    // }
+
