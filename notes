@@ -1,7 +1,15 @@
 notes
 
+I changed my Procfile
+to this :
+web: gunicorn --worker-class eventlet -w 1 application:app
+and then I used the command: heroku ps:scale web=1 
 
-    // // keep submit button diabled unless there's text in input
+
+
+
+
+    // // keep submit button disabled unless there's text in input
     // document.querySelector('#submit').disabled = true;
     // document.querySelector('#input').onkeyup = () => {
     //     if (document.querySelector('#input').value.length > 0)
@@ -41,4 +49,5 @@ notes
     //     return false;
 
     // }
+
 

@@ -10,6 +10,11 @@ main {
   margin-top: 100px;
 }
 
+#result {
+  border: 4px #f9a17d;
+  border-radius: 4px;
+}
+
 nav * {
   background-color: rgb(222, 93, 93);
 }
@@ -155,8 +160,18 @@ header p {
   width: 60%;
   display: inline-block;
 }
- 
 
+ul{
+  list-style: none;
+}
+
+.list-group button {
+  text-align: left;
+  background-color: transparent;
+  padding: 20px;
+  cursor: pointer;
+}
+ 
 
 section {
   padding-top: 20px;

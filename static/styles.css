@@ -10,6 +10,11 @@ main {
   margin-top: 100px;
 }
 
+#result {
+  border: 4px #f9a17d;
+  border-radius: 4px;
+}
+
 nav * {
   background-color: #de5d5d;
 }
@@ -153,6 +158,17 @@ header p {
 .chatbox input {
   width: 60%;
   display: inline-block;
+}
+
+ul {
+  list-style: none;
+}
+
+.list-group button {
+  text-align: left;
+  background-color: transparent;
+  padding: 20px;
+  cursor: pointer;
 }
 
 section {
