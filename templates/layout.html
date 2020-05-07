@@ -44,7 +44,7 @@
         
         <main role="main" class="container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-9">
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                     {% for category, message in messages %}
@@ -59,14 +59,14 @@
                     
                     {% endblock %}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="content-section">
                         <h3>Channels</h3> 
                             <ul class="list-group">
                                 <a href="/" id="home"> <li class="list-group-item">home</li> </a>
                                 <a href="/" id="room2"> <li class="list-group-item">room 2</li> </a>
-                                <a href="/"> <li class="list-group-item">room 3</li> </a>
-                                <a href="/"> <li class="list-group-item">create new channel</li> </a>
+                                <a href="/" id="room3"> <li class="list-group-item">room 3</li> </a>
+                                <a href="/" id="new_room"> <li class="list-group-item">create new channel</li> </a>
                             </ul>
                     </div>
                 </div>

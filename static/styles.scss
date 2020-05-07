@@ -10,11 +10,19 @@ main {
   margin-top: 100px;
 }
 
-#result {
-  border: 4px #f9a17d;
+#home_room{
+  border: 4px inset rgba(222, 93, 93, .5);
   border-radius: 4px;
+  height: 65vh;
+  overflow: scroll; 
+  vertical-align: bottom;
+  position: relative;
+  bottom: 0; 
 }
-
+ 
+#home_room *{ 
+}
+ 
 nav * {
   background-color: rgb(222, 93, 93);
 }
@@ -55,11 +63,11 @@ nav a:hover::after {
 }
 
 
+
 list-group a { 
   color: #403a60;
   position: relative;
-  text-decoration: none;
-  margin-right: 40px;
+  text-decoration: none; 
 }
 
 list-group a::after {
@@ -183,9 +191,23 @@ header p {
   max-height: 150px;
   margin-bottom: -20px;
 }
+
+.profile {
+  display: flex-wrap; 
+  justify-content: space-around;
+}
+
+.profile .form-group{ 
+  display: inline;
+  width: 30%; 
+}
+
  
 .chatbox input{
-  width: 60%;
+  width: 85%; 
+  padding-top: 4px;
+  padding-bottom: 6px;
+  margin-right: 1vw;
   display: inline-block;
 }
 

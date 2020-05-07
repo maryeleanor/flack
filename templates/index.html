@@ -2,46 +2,49 @@
 
 {% block body %}
     <script>
-        if (!localStorage.getItem('home'))
-                  localStorage.setItem('home', {{ home }});    
+        
+        if (!localStorage.getItem('home')) {
+                  localStorage.setItem('home', `{{ home_room }}` );    
+        };
+
+        if (!localStorage.getItem('username')) {
+            localStorage.setItem('username', `{{ username }}` );     
+        };
+
     </script>
 
     {% if not username %}
-    <h2 class="m-2"> Welcome to Flack</h2>
-    <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
+        <h2 class="m-2"> Welcome to Flack</h2>
+        <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
+         <div class="m-5"> </div>  
 
-    <div class="m-5"> </div>
-    <h5 class="m-2"> Enter a username to get started: </h5>
+         <h5 class="m-2"> Enter a username to get started: </h5>
 
-    <form action="/" method="post" class="m-2">
-            <div class="form-group">
-                <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
-            </div>
-        
-        <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
-        </form>
+            <form action="/" method="post" class="m-2">
+                <div class="form-group">
+                    <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+                </div>
+            
+            <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
+            </form>
 
         <div class="m-5"> </div>
-    
 
-    <script>
+        <script>
         document.querySelector('#username').onkeyup = function () {
-            if (document.querySelector('#username').value === '') {
-                document.querySelector('#submit').disabled = true;
+                if (document.querySelector('#username').value === '') {
+                    document.querySelector('#submit').disabled = true;
+                }
+                else {
+                    document.querySelector('#submit').disabled = false;
+                }
             }
-            else {
-                document.querySelector('#submit').disabled = false;
-            }
-        }
-    </script>   
-     {% endif %}
-
-    {% if username %}
-    <div class="m-5"> </div>    
- 
-    <div id="result">
-        {% if home %}
-        {% for message in home %} 
+        </script>  
+    {% endif %}
+        
+    <div id="home_room">
+        {% if home_room %}
+        {% for message in home_room %} 
         <p> {{ message }}  </p>
         {% endfor %}
         {% endif %}
@@ -49,9 +52,15 @@
     </div>
 
     <div class="m-5"> </div>
-    <div id="form" class="chatbox m-2">
-            <input autocomplete="off" autofocus id="input" class="m-2" placeholder=" ..." type="text">
-            <button class="btn btn-info" id="chat">submit</button>
+
+   
+    {% if username %}
+    
+    <div class="m-5"> </div>
+
+    <div id="form" class="chatbox">
+            <input autocomplete="off" autofocus id="chat" class=" " placeholder=" ..." type="text">
+            <button class="btn btn-info" id="send_chat">submit</button>
     </div>
  
     <div class="m-2"> </div>

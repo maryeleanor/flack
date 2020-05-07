@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block body %}
+ 
+<div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ image_file }}">
+            <div class="media-body">
+                <h2 class="account-heading"> {{ username }} </h2>
+            </div>
+        </div>
+    
+    <div class="m-5"> </div>
+
+    <form method="POST" action="" >
+        
+        <fieldset class="profile">
+            <legend class="border-bottom mb-4">Update Account Info</legend>
+
+            <div class="form-group m-2">
+             Update username: 
+                <input id="username" autocomplete="off" autofocus class="form-control m-2" name="username" placeholder="Username" type="text">
+            </div>
+
+            <div class="form-group m-2">    
+               Add profile image: &nbsp;
+
+                    <input id="image"  name="image" type="file" class="m-2">
+            </div>
+
+            <div class="form-group m-2">
+                <button id="submit" class="btn btn-info" type="submit" disabled >Update</button>
+            </div>
+
+        </fieldset>
+        
+    </form>
+
+ </div>
+
+<script>
+    document.querySelector('#username').onkeyup = function () {
+        if (document.querySelector('#username').value === '') {
+            document.querySelector('#submit').disabled = true;
+        }
+        else {
+            document.querySelector('#submit').disabled = false;
+        }
+    }
+</script>
+
+
+{% endblock %}
