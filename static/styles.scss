@@ -54,6 +54,34 @@ nav a:hover::after {
   transform: translateY(0);
 }
 
+
+list-group a { 
+  color: #403a60;
+  position: relative;
+  text-decoration: none;
+  margin-right: 40px;
+}
+
+list-group a::after {
+  content: "";
+  color: #403a60;
+  border-bottom: 3px solid #403a60;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(10px);
+  transition: transform 0.3s ease;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+}
+
+list-group a:hover::after {
+  color: #403a60;
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .dropdown-toggle {
   background-color: transparent;
   border-color: #403a60;
@@ -164,13 +192,7 @@ header p {
 ul{
   list-style: none;
 }
-
-.list-group button {
-  text-align: left;
-  background-color: transparent;
-  padding: 20px;
-  cursor: pointer;
-}
+ 
  
 
 section {

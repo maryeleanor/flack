@@ -1,11 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-
+ 
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-
     socket.on('connect', () => {
 
         input.addEventListener("keyup", function (event) {
@@ -28,11 +26,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('chat added', data => {
         var p = document.createElement('p');
-        p.innerHTML = `${data.username}: ${data.chat}`;
+        p.innerHTML = `${data.chat}`;
         console.log(p);
         document.querySelector('#result').append(p);
+        if (!localStorage.getItem('home'))
+            localStorage.setItem('home', data.home);    
     });
-  
+    
 
+    document.querySelector('#room2').onclick = () => {
+    socket.emit('create', 'room2');
+
+    // server side code
+    io.sockets.on('connection', function(socket) {
+    socket.on('create', function(room2) {
+        socket.join(room2);
+            });
+    });
+       
+
+
+});
 });
  

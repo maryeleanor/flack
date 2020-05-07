@@ -29,7 +29,7 @@
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
-                           {% if current_user.is_authenticated %}
+                           {% if username %}
                             <a class="nav-item nav-link" href="{{ url_for('account') }}">Profile</a>
                             <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}   
@@ -63,9 +63,10 @@
                     <div class="content-section">
                         <h3>Channels</h3> 
                             <ul class="list-group">
-                                <button> <li class="">general</li></button>
-                                <button> <li class="">announcements</li> </button>
-                                <button> <li class="">create new channel</li> </button>
+                                <a href="/" id="home"> <li class="list-group-item">home</li> </a>
+                                <a href="/" id="room2"> <li class="list-group-item">room 2</li> </a>
+                                <a href="/"> <li class="list-group-item">room 3</li> </a>
+                                <a href="/"> <li class="list-group-item">create new channel</li> </a>
                             </ul>
                     </div>
                 </div>
