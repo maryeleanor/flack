@@ -2,68 +2,98 @@
 
 {% block body %}
     <script>
-        
-        if (!localStorage.getItem('home')) {
-                  localStorage.setItem('home', `{{ home_room }}` );    
-        };
-
-        if (!localStorage.getItem('username')) {
-            localStorage.setItem('username', `{{ username }}` );     
-        };
-
+        var room = `{{ room }}`;
+        var username = `{{ username|e }}`; 
+        localStorage.setItem('room', room);  
+        localStorage.setItem('username', username);
     </script>
+    <main role="main" class="container">
+        <div class="row">
+        <div class="col-md-9">
+                                
+            {% if not username %}
+                <h2 class="m-2"> Welcome to Flack</h2>
+                <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
+                <div class="m-5"> </div>  
+                <div class="login">
+                    <h5 class="m-2"> Enter a username and select a room to get started: </h5>
 
-    {% if not username %}
-        <h2 class="m-2"> Welcome to Flack</h2>
-        <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
-         <div class="m-5"> </div>  
-
-         <h5 class="m-2"> Enter a username to get started: </h5>
-
-            <form action="/" method="post" class="m-2">
-                <div class="form-group">
-                    <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+                        <form action="/" method="post" class="m-2">
+                            <div class="form-group">
+                                <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select a channel
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdown">
+                                {% for room in rooms %}
+                                    <button class="dropdown-item" type="button" vallue="{{ room }}">{{ room }}</button>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-5"> </div>
+                        <div class="m-5"> </div>
+                        <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
+                        </form>
                 </div>
+
+                <div class="m-5"> </div>
+
+                <script>
+
+                document.querySelectorAll('.dropdown-item').forEach(button => {
+                    button.onclick = () => {
+                        document.querySelector('#dropdown').innerHTML = button.innerHTML; 
+                        button.classList.add('active');
+                    };
+                });
+         
+
+                document.querySelector('#username').onkeyup = function () {
+                        if (document.querySelector('#username').value === '') {
+                            document.querySelector('#submit').disabled = true;
+                        }
+                        else {
+                            document.querySelector('#submit').disabled = false;
+                        }
+                    }
+
+                </script>  
+            {% endif %}
+
+            {% if username %}    
+
+
+            <div id="chatroom">
+                
+            </div>
+
+            <div class="m-5"> </div>
+
+            <div id="form" class="chatbox">
+                    <input autocomplete="off" autofocus id="chat" class=" " placeholder=" ..." type="text">
+                    <button class="btn btn-info" id="send_chat">send</button>
+            </div>
             
-            <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
-            </form>
+            <div class="m-2"> </div>
 
-        <div class="m-5"> </div>
-
-        <script>
-        document.querySelector('#username').onkeyup = function () {
-                if (document.querySelector('#username').value === '') {
-                    document.querySelector('#submit').disabled = true;
-                }
-                else {
-                    document.querySelector('#submit').disabled = false;
-                }
-            }
-        </script>  
-    {% endif %}
-        
-    <div id="home_room">
-        {% if home_room %}
-        {% for message in home_room %} 
-        <p> {{ message }}  </p>
-        {% endfor %}
-        {% endif %}
-
-    </div>
-
-    <div class="m-5"> </div>
-
-   
-    {% if username %}
     
-    <div class="m-5"> </div>
-
-    <div id="form" class="chatbox">
-            <input autocomplete="off" autofocus id="chat" class=" " placeholder=" ..." type="text">
-            <button class="btn btn-info" id="send_chat">submit</button>
-    </div>
- 
-    <div class="m-2"> </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-section">
+                <h3>Channels</h3> 
+                    <ul class="list-group">
+                        {% for room in rooms %}
+                            <li class="list-group-item select_room"> {{ room|title }}</li>
+                        {% endfor %}
+                        <li class="list-group-item select_room">create new channel </li>
+                    </ul>
+            </div>
+         </div>
+        </div>
+    </main> 
     {% endif %}
 
 {% endblock %}

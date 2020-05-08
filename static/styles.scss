@@ -10,19 +10,6 @@ main {
   margin-top: 100px;
 }
 
-#home_room{
-  border: 4px inset rgba(222, 93, 93, .5);
-  border-radius: 4px;
-  height: 65vh;
-  overflow: scroll; 
-  vertical-align: bottom;
-  position: relative;
-  bottom: 0; 
-}
- 
-#home_room *{ 
-}
- 
 nav * {
   background-color: rgb(222, 93, 93);
 }
@@ -62,15 +49,48 @@ nav a:hover::after {
   transform: translateY(0);
 }
 
+#submit{
+  float: right;
+}
+
+option{
+  cursor: pointer;
+  
+}
+
+#chatroom{
+  padding: 4px;
+  border: 4px inset rgba(222, 93, 93, .3);
+  border-radius: 4px;
+  height: 65vh;
+  overflow: scroll; 
+  vertical-align: bottom;
+  position: relative;
+  bottom: 0; 
+}
+
+.date {
+  font-size: .8em;
+  color: #403a60;
+  float: right;
+}
+
+.username {
+  text-decoration: underline;
+  font-weight: bold; 
+  text-transform: capitalize;
+}
 
 
-list-group a { 
+
+.list-group li { 
   color: #403a60;
   position: relative;
   text-decoration: none; 
+  cursor: pointer;
 }
 
-list-group a::after {
+.list-group li::after {
   content: "";
   color: #403a60;
   border-bottom: 3px solid #403a60;
@@ -84,7 +104,7 @@ list-group a::after {
   width: 100%;
 }
 
-list-group a:hover::after {
+.list-group li:hover::after {
   color: #403a60;
   opacity: 1;
   transform: translateY(0);
@@ -204,11 +224,15 @@ header p {
 
  
 .chatbox input{
-  width: 85%; 
+  width: 80%; 
   padding-top: 4px;
   padding-bottom: 6px;
   margin-right: 1vw;
   display: inline-block;
+}
+
+.chatbox button{
+  float: right;
 }
 
 ul{
@@ -257,6 +281,16 @@ section, article, aside, footer, header, nav {
 }
 
 @media only screen and (max-width: 575px) {
+  #home_room{
+    margin-top: 10px;
+    height: 50vh;
+  }
+  .chatbox input{
+    width: 70%;
+    display: inline;
+  }
+  
+
   .logo-lg {
     max-height: 100px;
   }
