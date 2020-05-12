@@ -7,70 +7,94 @@
         localStorage.setItem('room', room);  
         localStorage.setItem('username', username);
     </script>
+
     <main role="main" class="container">
         <div class="row">
         <div class="col-md-9">
                                 
             {% if not username %}
-                <h2 class="m-2"> Welcome to Flack</h2>
-                <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
-                <div class="m-5"> </div>  
-                <div class="login">
-                    <h5 class="m-2"> Enter a username and select a room to get started: </h5>
+            <h2 class="m-2"> Welcome to Flack</h2>
+            <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
+            
+            <div class="m-5"> </div>   
+            
+            <h5 class="m-2"> Select a channel and enter a username to get started: </h5>
+            
+            <form action="/" method="post" class="m-2 login">
+            
+                <div class="m-4 form-group"> </div>  
 
-                        <form action="/" method="post" class="m-2">
-                            <div class="form-group">
-                                <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle" type="button" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Select a channel
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdown">
-                                {% for room in rooms %}
-                                    <button class="dropdown-item" type="button" vallue="{{ room }}">{{ room }}</button>
-                                {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="m-5"> </div>
-                        <div class="m-5"> </div>
-                        <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
-                        </form>
+                    <div class="form-group">
+                        <select class="form-control btn" name="room" autofocus aria-haspopup="true" aria-expanded="false"> 
+                            <option class="dropdown-item" id="dropdown" disabled="" selected="" value="">Select a Channel</option>
+                            {% for room in rooms %}
+                                    <option id="room"> {{ room|title }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                        
+                <div class="m-2 form-group"> </div>
+
+                <div class="form-group">
+                    <input id="username" autocomplete="off" class="form-control" name="username" placeholder="Username" type="text">
                 </div>
 
-                <div class="m-5"> </div>
+                <div class="m-2 form-group"> </div>
 
-                <script>
+                <div class="form-group">
+                <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
+                </div>
 
-                document.querySelectorAll('.dropdown-item').forEach(button => {
-                    button.onclick = () => {
-                        document.querySelector('#dropdown').innerHTML = button.innerHTML; 
-                        button.classList.add('active');
-                    };
-                });
-         
+            </form>
+            
+            <div class="m-5"> </div>
 
-                document.querySelector('#username').onkeyup = function () {
-                        if (document.querySelector('#username').value === '') {
+            <script>
+            
+            document.addEventListener('DOMContentLoaded', () => {
+                
+                var username = document.querySelector('#username');
+                username.addEventListener("keyup", submitFunction);
+                document.addEventListener('click', submitFunction);
+                document.addEventListener('keyup', submitFunction);
+                
+                function submitFunction() {
+                        if (username.value === ''){
                             document.querySelector('#submit').disabled = true;
                         }
                         else {
                             document.querySelector('#submit').disabled = false;
                         }
-                    }
+                };
 
-                </script>  
+            });
+
+            </script>  
+
+            {% endif %}  
+
+            {% if error %} 
+                {{ error }}
+                
             {% endif %}
 
-            {% if username %}    
+            {% if username %}  
+             
+            <div class="m-3"> </div>
 
 
             <div id="chatroom">
-                
-            </div>
+            {% for message in messages[room] %}
+                <p>
+                <span class="date">{{ message['timestamp'] }}</span>
+                <span class="username">{{ message['username'] }}</span>
+                {{ message['msg'] }} {{ message['room'] }}
+                </p>
+            {% endfor %}  
 
-            <div class="m-5"> </div>
+            </div> 
+
+            <div class="m-3"> </div>
 
             <div id="form" class="chatbox">
                     <input autocomplete="off" autofocus id="chat" class=" " placeholder=" ..." type="text">
@@ -80,20 +104,57 @@
             <div class="m-2"> </div>
 
     
-        </div>
-        <div class="col-md-3">
-            <div class="content-section">
-                <h3>Channels</h3> 
-                    <ul class="list-group">
-                        {% for room in rooms %}
-                            <li class="list-group-item select_room"> {{ room|title }}</li>
-                        {% endfor %}
-                        <li class="list-group-item select_room">create new channel </li>
-                    </ul>
             </div>
-         </div>
+            <div class="col-md-3">
+                <div class="content-section">
+                    <h3>Channels</h3> 
+                        <ul class="list-group">
+                            {% for room in rooms %}
+                                <li class="list-group-item select_room">{{ room|title }}</li>
+                            {% endfor %}
+                            <!-- Button trigger modal -->
+                            <li class="list-group-item select_room" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
+                        </ul>
+                </div>
+            </div> 
+
+            
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create a new channel</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/" method="post" class="m-2 login">
+                    
+                                <div class="m-2 form-group"> </div>
+
+                                <div class="form-group">
+                                    <input id="channel" autocomplete="off" class="form-control" name="channel" placeholder="new channel name" type="text">
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button   type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+            </div>
+            </div>
+
+            <scrip>
+
+            </script>
+            {% endif %}
+
         </div>
     </main> 
-    {% endif %}
+     
 
 {% endblock %}

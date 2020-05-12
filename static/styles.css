@@ -10,6 +10,10 @@ main {
   margin-top: 100px;
 }
 
+.container {
+  max-width: 98%;
+}
+
 nav * {
   background-color: #de5d5d;
 }
@@ -48,10 +52,6 @@ nav a:hover::after {
   transform: translateY(0);
 }
 
-#submit {
-  float: right;
-}
-
 option {
   cursor: pointer;
 }
@@ -60,7 +60,7 @@ option {
   padding: 4px;
   border: 4px inset rgba(222, 93, 93, 0.3);
   border-radius: 4px;
-  height: 65vh;
+  height: 70vh;
   overflow: scroll;
   vertical-align: bottom;
   position: relative;
@@ -74,9 +74,7 @@ option {
 }
 
 .username {
-  text-decoration: underline;
   font-weight: bold;
-  text-transform: capitalize;
 }
 
 .list-group li {
@@ -208,6 +206,15 @@ header p {
   margin-bottom: -20px;
 }
 
+.login {
+  display: flex-wrap;
+  justify-content: space-around;
+}
+
+.login .form-group {
+  display: inline-block;
+}
+
 .profile {
   display: flex-wrap;
   justify-content: space-around;
@@ -219,7 +226,7 @@ header p {
 }
 
 .chatbox input {
-  width: 80%;
+  width: 87%;
   padding-top: 4px;
   padding-bottom: 6px;
   margin-right: 1vw;

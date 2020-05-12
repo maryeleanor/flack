@@ -1,8 +1,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // let room = localStorage.getItem('room');  
-    // let username = localStorage.getItem('username');
+    let room = localStorage.getItem('room');  
+    let username = localStorage.getItem('username');
     // console.log(username)
     // console.log(room)
 
@@ -26,17 +26,34 @@ document.addEventListener('DOMContentLoaded', () => {
         // on connect, send message to server
         socket.on('connect', () => {
             room = localStorage.getItem('room');
-            console.log(room);  
-            socket.emit('connect to room', {'msg': ' has joined ', 'room': room}, room=room);
+            socket.emit('connect to room', {'msg': ' has joined ', 'room': room});
         });
 
-        // listen for connect message from server and append to chatroom
-        socket.on('message', data => {
-            console.log(data.room);
-            console.log(data.msg);
-            console.log(data.username)
-            // console.log(data.sysmsg);
-
+        // listen for send message from server and append to chatroom
+        socket.on('message', data => {  
+             if (data.messages) {     
+                    data.messages.forEach(message => { 
+                        var span_date = document.createElement('span');
+                        span_date.classList.add("date");
+                        var span_username = document.createElement('span');
+                        span_username.classList.add("username");
+                        var p = document.createElement('p');
+                        var chat_space = ": ";
+                        span_date.innerHTML = message.timestamp;
+                        span_username.innerHTML = message.username;
+                        if (message.msg) {    
+                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + message.msg + message.room;
+                        }
+                        else if (message.chat) {
+                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + chat_space + message.chat;
+                        }
+                        else {
+                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + message.sysmsg + message.room;
+                        }
+                        messageBody.append(p);
+                        messageBody.scrollTop = messageBody.scrollHeight;
+                    });
+                };
             var span_date = document.createElement('span');
             span_date.classList.add("date");
             var span_username = document.createElement('span');
@@ -65,39 +82,31 @@ document.addEventListener('DOMContentLoaded', () => {
             room = localStorage.getItem('room');  
             if (chat.length > 0) {    
                 socket.emit('send chat', {'chat': chat, 'room': room});
-                document.querySelector('#chat').value = " ";
+                document.querySelector('#chat').value = '';
+                document.querySelector('#chat').placeholder = ' ...'; 
                 return false;
             };
         };
         
         // when room button clicked, get room name, leave old and join new
         document.querySelectorAll('.select_room').forEach(li => {
-            li.onclick = () =>{
-                let newRoom = li.innerHTML;
+            li.onclick = () =>{ 
+                let newRoom = li.innerHTML; 
                 if (newRoom == room) {
-                    msg = `You're already in ${room} room`;
+                    msg = `You're already in ${room}`;
                     var p = document.createElement('p');
                     p.innerHTML = msg;
                     messageBody.append(p);
                 } else {
+                    messageBody.innerHTML = '';
                     socket.emit('leave', {'username': username, 'room': room});
                     socket.emit('join', {'username': username, 'room': newRoom});
                     localStorage.setItem('room', newRoom); 
                     room = newRoom;
                 }
             }
+                    
         });
-        
-        // // emit leave room to server
-        // function leaveRoom(room){
-        //     socket.emit('leave', {'username': username, 'room': room});
-        // };
-
-        // // emit join room to server
-        // function joinRoom(newRoom){
-        //     socket.emit('join', {'username': username, 'room': newRoom});
-        //     localStorage.setItem('room', newRoom); 
-        // };
 
 
 });
