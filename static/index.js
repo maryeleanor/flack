@@ -31,29 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // listen for send message from server and append to chatroom
         socket.on('message', data => {  
-             if (data.messages) {     
-                    data.messages.forEach(message => { 
-                        var span_date = document.createElement('span');
-                        span_date.classList.add("date");
-                        var span_username = document.createElement('span');
-                        span_username.classList.add("username");
-                        var p = document.createElement('p');
-                        var chat_space = ": ";
-                        span_date.innerHTML = message.timestamp;
-                        span_username.innerHTML = message.username;
-                        if (message.msg) {    
-                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + message.msg + message.room;
-                        }
-                        else if (message.chat) {
+            if (data.messages) {
+                messages = data.messages;
+                if (messages.length > 1) {     
+                    console.log(messages)
+                    messages.forEach(message => { 
+                        if (message.chat) { 
+                            var span_date = document.createElement('span');
+                            span_date.classList.add("date");
+                            var span_username = document.createElement('span');
+                            span_username.classList.add("username");
+                            var p = document.createElement('p');
+                            var chat_space = ": ";
+                            span_date.innerHTML = message.timestamp;
+                            span_username.innerHTML = message.username;
                             p.innerHTML = span_date.outerHTML  + span_username.outerHTML + chat_space + message.chat;
-                        }
-                        else {
-                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + message.sysmsg + message.room;
-                        }
-                        messageBody.append(p);
-                        messageBody.scrollTop = messageBody.scrollHeight;
+                            messageBody.append(p);
+                            messageBody.scrollTop = messageBody.scrollHeight;
+                        };
                     });
+                    }; 
                 };
+
             var span_date = document.createElement('span');
             span_date.classList.add("date");
             var span_username = document.createElement('span');
@@ -62,14 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
             var chat_space = ": ";
             span_date.innerHTML = data.timestamp;
             span_username.innerHTML = data.username;
-           
+        
             if (data.msg) {    
+                p.classList.add("sysmessage");
                 p.innerHTML = span_date.outerHTML  + span_username.outerHTML + data.msg + data.room;
             }
             else if (data.chat) {
                 p.innerHTML = span_date.outerHTML  + span_username.outerHTML + chat_space + data.chat;
             }
             else {
+                p.classList.add("sysmessage");
                 p.innerHTML = span_date.outerHTML  + span_username.outerHTML + data.sysmsg + data.room;;
             }
             messageBody.append(p);
@@ -95,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (newRoom == room) {
                     msg = `You're already in ${room}`;
                     var p = document.createElement('p');
+                    p.classList.add("sysmessage");
                     p.innerHTML = msg;
                     messageBody.append(p);
                 } else {
@@ -107,6 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
                     
         });
+
+
+
+         // when createroom button clicked, get room name, leave old and join new
+        document.querySelector('#createroom').onclick = () => {
+                room = localStorage.getItem('room');
+                socket.emit('leave', {'username': username, 'room': room}); 
+            }
+        
+
 
 
 });

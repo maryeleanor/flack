@@ -22,22 +22,22 @@ def index():
 
         # if user clicked create new channel
         if request.form.get("channel"):
-            new_room = request.form.get("channel")
-            new_room = new_room.capitalize()
+            room = request.form.get("channel")
+            room = room.capitalize()
             username = None
             if 'username' in session:
                 username = session["username"]
 
             # check if channel exists
-            for i in rooms:
-                if i == new_room:
-                    error = 'That room already exists.'
-                    return render_template("index.html", username=username, room=new_room, rooms=rooms, messages=messages, error=error)
-                else:
-                    rooms.append(new_room)
-                    messages.update({new_room: deque(maxlen=100)})
-                    session["room"] = new_room
-                    return render_template("index.html", username=username, room=new_room, rooms=rooms, messages=messages)
+            if room in rooms:
+                error = 'That room already exists.'
+                session["room"] = room 
+                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, error=error)
+            else:
+                rooms.append(room)
+                messages.update({room: deque(maxlen=100)})
+                session["room"] = room
+                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages)
 
         #get username and room from form
         username = request.form.get("username")
@@ -86,7 +86,8 @@ def connection(data):
         messages[room] = room_messages
         print(messages[room])
 
-    send({'msg': msg, 'username': username, 'timestamp': timestamp, 'room': room}, room=room, broadcast=True)
+    current_room_messages = list(messages[room])
+    send({'msg': msg, 'username': username, 'timestamp': timestamp, 'room': room, 'messages': current_room_messages}, room=room)
 
 
 @socketio.on('send chat')
@@ -107,27 +108,23 @@ def join(data):
     username = session['username']
     room = data['room']
     timestamp = strftime('%b %d, %I:%M %p', localtime())
-    chat = " has entered "
+    sysmsg = " has entered "
     join_room(room)
     if room in rooms:
         room_messages = messages[room]
-        row = {'username': username, 'timestamp': timestamp, 'chat': chat, 'room':room}
+        row = {'username': username, 'timestamp': timestamp, 'sysmsg': sysmsg, 'room':room}
         room_messages.append(row)
         messages[room] = room_messages
-        print(messages[room])
     else:
         rooms.append(room)
         messages.update({room: deque(maxlen=100)})
         room_messages = messages[room]
-        row = {'username': username, 'timestamp': timestamp, 'chat': chat, 'room':room}
+        row = {'username': username, 'timestamp': timestamp, 'sysmsg': sysmsg, 'room':room}
         room_messages.append(row)
         messages[room] = room_messages
-        print(messages[room])
-
     current_room_messages = list(messages[room])
-    room_messages.append(row)
     print(current_room_messages)
-    send({'sysmsg': chat, 'username': username, 'timestamp': timestamp, 'room': room, 'messages': current_room_messages}, room=room)
+    send({'sysmsg': sysmsg, 'username': username, 'timestamp': timestamp, 'room': room, 'messages': current_room_messages}, room=room)
 
 
 @socketio.on('leave')
@@ -135,9 +132,9 @@ def leave(data):
     username = data['username']
     room = data['room']
     timestamp = strftime('%b %d, %I:%M %p', localtime())
-    chat = " has left "
+    sysmsg = " has left "
     leave_room(room)
-    send({'sysmsg': chat, 'username': username, 'timestamp': timestamp, 'room': room}, room=room)
+    send({'sysmsg': sysmsg, 'username': username, 'timestamp': timestamp, 'room': room}, room=room)
 
 
 

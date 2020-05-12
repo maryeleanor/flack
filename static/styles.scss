@@ -57,6 +57,73 @@ option{
   cursor: pointer;
 }
 
+
+.error{
+  background-color: #F1948A;
+  font-weight: bold;
+}
+
+
+.hide_me {
+      animation-name: hide;
+      animation-duration: 5s;
+      animation-fill-mode: forwards;
+      animation-play-state: paused;
+    // -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    // /* Firefox */
+    // -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    // /* Safari and Chrome */
+    // -o-animation: cssAnimation 0s ease-in 5s forwards;
+    // /* Opera */
+    // animation: cssAnimation 0s ease-in 5s forwards;
+    // -webkit-animation-fill-mode: forwards;
+    // animation-fill-mode: forwards;
+}
+
+@keyframes hide {
+                0% {
+                    opacity: 1;
+                    height: 100%;
+                    line-height: 100%; 
+                }
+                75% {
+                    opacity: 0;
+                    height: 100%;
+                    line-height: 100%; 
+                }
+                100% {
+                    opacity: 0;
+                    height: 0px;
+                    line-height: 0px; 
+                }
+            }
+
+
+@keyframes cssAnimation {
+      0%   {opacity: 1;}
+      80%  {opacity: 1;}
+      90%  {opacity: 0;}
+      100% {
+        opacity: 0;
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+      0%   {opacity: 1;}
+      80%  {opacity: 1;}
+      90%  {opacity: 0;}
+      100% {
+        opacity: 0;
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}
+
+
+
 #chatroom{
   padding: 4px;
   border: 4px inset rgba(222, 93, 93, .3);
@@ -78,6 +145,9 @@ option{
   font-weight: bold;  
 }
 
+.sysmessage {
+  font: italic .7em "Nunito", sans-serif;  
+}
 
 .list-group li { 
   color: #403a60;

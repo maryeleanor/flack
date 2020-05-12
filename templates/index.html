@@ -74,8 +74,9 @@
             {% endif %}  
 
             {% if error %} 
+            <p class="error hide_me">
                 {{ error }}
-                
+            </p>
             {% endif %}
 
             {% if username %}  
@@ -84,13 +85,7 @@
 
 
             <div id="chatroom">
-            {% for message in messages[room] %}
-                <p>
-                <span class="date">{{ message['timestamp'] }}</span>
-                <span class="username">{{ message['username'] }}</span>
-                {{ message['msg'] }} {{ message['room'] }}
-                </p>
-            {% endfor %}  
+            
 
             </div> 
 
@@ -113,7 +108,7 @@
                                 <li class="list-group-item select_room">{{ room|title }}</li>
                             {% endfor %}
                             <!-- Button trigger modal -->
-                            <li class="list-group-item select_room" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
+                            <li class="list-group-item" id="createroom" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
                         </ul>
                 </div>
             </div> 
