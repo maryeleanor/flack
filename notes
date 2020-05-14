@@ -5,6 +5,10 @@ to this :
 web: gunicorn --worker-class eventlet -w 1 application:app
 and then I used the command: heroku ps:scale web=1 
 
+web: gunicorn --worker-class eventlet -w 1 
+web: gunicorn -k eventlet application:app
+web: gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker --log-file=- server:app
+
 
 
 
