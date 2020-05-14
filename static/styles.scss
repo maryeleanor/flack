@@ -174,8 +174,9 @@ option{
 }
  
 .logo {
-  margin: 10px;
-  height: 80px;
+    margin-right: 10px;
+    height: 40px;
+    padding-bottom: 4px;
 }
 
 .navbar-brand {
@@ -370,10 +371,15 @@ section, article, aside, footer, header, nav {
     display: block;
   }
 
-  .logo-lg {
-    max-height: 100px;
+  .logo {
+    max-height: 50px;
   }
  
+  .navbar-brand{
+    font-size: 1em;
+    padding: 0;
+  }
+
   footer { 
     margin:5px;
   }

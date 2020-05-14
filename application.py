@@ -48,7 +48,7 @@ def index():
         #get username and room from form
         username = request.form.get("username")
         room = request.form.get("room")
-        if not room:
+        if room == 'None' or room == 'Create new channel':
             room = 'Home'
          
         # remember user and room choice
