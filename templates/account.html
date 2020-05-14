@@ -6,52 +6,91 @@
 
 {% block body %}
  
-<div class="content-section">
+<main role="main" class="container">
+<div class="row">
+<div class="col-md-12">
+    <div class="content-section">
         <div class="media">
-            <img class="rounded-circle account-img" src="{{ image_file }}">
+            <img class="rounded-circle article-img" src="{{ image_file }}"> 
             <div class="media-body">
                 <h2 class="account-heading"> {{ username }} </h2>
             </div>
+            
         </div>
-    
-    <div class="m-5"> </div>
-
-    <form method="POST" action="" >
         
-        <fieldset class="profile">
-            <legend class="border-bottom mb-4">Update Account Info</legend>
+        <div class="m-5"> </div>  
 
-            <div class="form-group m-2">
-             Update username: 
-                <input id="username" autocomplete="off" autofocus class="form-control m-2" name="username" placeholder="Username" type="text">
-            </div>
+        <form action="/account" method="POST" enctype="multipart/form-data" class="col-md-9">
+            
+            <fieldset class="profile">
+                <legend class="border-bottom mb-4">Update your Profile</legend>
 
-            <div class="form-group m-2">    
-               Add profile image: &nbsp;
+                <div class="form-group m-2">
+                    <label> Update username: </label>
+                        <input id="username" autocomplete="off" autofocus class="form-control m-2" name="username" placeholder="Username" type="text">
+                </div>
 
-                    <input id="image"  name="image" type="file" class="m-2">
-            </div>
+                <div class="form-group m-2">    
+                    <label> Add profile image: &nbsp; </label>
+                        <input id="image"  name="image" type="file" class="m-2">
+                </div>
 
-            <div class="form-group m-2">
-                <button id="submit" class="btn btn-info" type="submit" disabled >Update</button>
-            </div>
+                <div class="form-group m-2">
+                    <button id="submit" class="btn" type="submit" disabled >Update</button>
+                </div>
 
-        </fieldset>
+            </fieldset>
+            
+        </form>
+
+        {% if error %}
+        <p class="error"> {{ error }} </p>
+        {% endif %}
+
+        {% if success %}
+        <p class="error"> {{ success }} </p>
+        {% endif %}
+
+    </div>
+
+   
+</div></div>
+</main>
+
+{% endblock %}
+
+{% block script %} 
+
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        let image = document.querySelector('#image');
+        image.addEventListener('change', filesize);
+
+        function filesize() {
+            let filesize = image.files[0].size; 
+            document.cookie = `filesize = ${filesize}`;
+        };
         
-    </form>
+        let username = document.querySelector('#username');
 
- </div>
+        username.addEventListener("keyup", submitFunction);
+        image.addEventListener('change', submitFunction);
 
-<script>
-    document.querySelector('#username').onkeyup = function () {
-        if (document.querySelector('#username').value === '') {
-            document.querySelector('#submit').disabled = true;
-        }
-        else {
-            document.querySelector('#submit').disabled = false;
-        }
-    }
-</script>
+        // document.addEventListener('click', submitFunction);
+        // document.addEventListener('keyup', submitFunction);
+        
+        function submitFunction() {
+                if (username.value == '' && image.value == ''){ 
+                    document.querySelector('#submit').disabled = true;
+                }
+                else {
+                    document.querySelector('#submit').disabled = false;
+                }
+        };
 
+    });
+
+</script>  
 
 {% endblock %}

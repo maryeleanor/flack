@@ -1,4 +1,15 @@
+
+$dark-base: #345995;
+$dark-red: #de5d5d; 
+// $old-dark-base: #403A60;
+
+
 body {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba($dark-red, .2);
+  // position: relative;
+  height: 100%;
   font-family: "Nunito", sans-serif;
 }
 
@@ -7,7 +18,8 @@ h1, h2 {
 }
 
 main { 
-  margin-top: 100px;
+  flex: 1 0 auto;
+  margin-top: 60px;   
 }
 
 .container{
@@ -15,28 +27,25 @@ main {
 }
 
 nav * {
-  background-color: rgb(222, 93, 93);
+  background-color: $dark-red; 
 }
 
 
-nav { 
-  color: #403a60;
+nav {  
   font-family: "Nunito", sans-serif;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
-nav a { 
-  color: #403a60;
+nav a {  
   position: relative;
   text-decoration: none;
   margin-right: 40px;
 }
 
 nav a::after {
-  content: "";
-  color: #403a60;
-  border-bottom: 3px solid #403a60;
+  content: ""; 
+  border-bottom: 3px solid $dark-base;
   position: absolute;
   top: 0;
   left: 0;
@@ -48,96 +57,83 @@ nav a::after {
 }
 
 nav a:hover::after {
-  color: #403a60;
+  color: $dark-base;
   opacity: 1;
   transform: translateY(0);
 }
- 
+
+button {
+  color: #fff;
+  background-color: $dark-base;
+}
+
 option{
   cursor: pointer;
 }
 
 
 .error{
-  background-color: #F1948A;
+  background-color: rgba($dark-red, .6);
   font-weight: bold;
+  padding: 20px;
+  border-radius: 4px;
 }
-
 
 .hide_me {
       animation-name: hide;
       animation-duration: 5s;
-      animation-fill-mode: forwards;
-      animation-play-state: paused;
-    // -moz-animation: cssAnimation 0s ease-in 5s forwards;
-    // /* Firefox */
-    // -webkit-animation: cssAnimation 0s ease-in 5s forwards;
-    // /* Safari and Chrome */
-    // -o-animation: cssAnimation 0s ease-in 5s forwards;
-    // /* Opera */
-    // animation: cssAnimation 0s ease-in 5s forwards;
-    // -webkit-animation-fill-mode: forwards;
-    // animation-fill-mode: forwards;
-}
+      animation-fill-mode: forwards; 
+  }
 
 @keyframes hide {
                 0% {
                     opacity: 1;
                     height: 100%;
-                    line-height: 100%; 
+                    line-height: 100%;
+                    padding: 20px; 
                 }
-                75% {
-                    opacity: 0;
+                85% {
+                    opacity: 1;
                     height: 100%;
-                    line-height: 100%; 
+                    line-height: 100%;
+                    padding: 20px; 
                 }
                 100% {
                     opacity: 0;
                     height: 0px;
-                    line-height: 0px; 
+                    line-height: 0px;
+                    padding: 0px; 
                 }
             }
 
-
-@keyframes cssAnimation {
-      0%   {opacity: 1;}
-      80%  {opacity: 1;}
-      90%  {opacity: 0;}
-      100% {
-        opacity: 0;
-        width:0;
-        height:0;
-        overflow:hidden;
-    }
+.content-section{
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
 }
-@-webkit-keyframes cssAnimation {
-      0%   {opacity: 1;}
-      80%  {opacity: 1;}
-      90%  {opacity: 0;}
-      100% {
-        opacity: 0;
-        width:0;
-        height:0;
-        visibility:hidden;
-    }
-}
-
-
 
 #chatroom{
-  padding: 4px;
-  border: 4px inset rgba(222, 93, 93, .3);
+  padding: 6px;
+  background-color: #fff;
+  // border: 2px inset rgba($dark-red, .5);
   border-radius: 4px;
-  height: 70vh;
+  height: 80vh;
   overflow: scroll; 
   vertical-align: bottom;
   position: relative;
   bottom: 0; 
 }
 
+.chatimg {
+  height: 40px; 
+  width: 40px;
+  object-fit: cover;
+  margin-right: 4px;
+}
+
 .date {
   font-size: .8em;
-  color: #403a60;
+  color: $dark-base;
   float: right;
 }
 
@@ -150,7 +146,8 @@ option{
 }
 
 .list-group li { 
-  color: #403a60;
+  border: 0;
+  color: $dark-base;
   position: relative;
   text-decoration: none; 
   cursor: pointer;
@@ -158,8 +155,8 @@ option{
 
 .list-group li::after {
   content: "";
-  color: #403a60;
-  border-bottom: 3px solid #403a60;
+  color: $dark-base;
+  border-bottom: 3px solid $dark-base;
   position: absolute;
   top: 0;
   left: 0;
@@ -171,46 +168,11 @@ option{
 }
 
 .list-group li:hover::after {
-  color: #403a60;
+  color: $dark-base;
   opacity: 1;
   transform: translateY(0);
 }
-
-.dropdown-toggle {
-  background-color: transparent;
-  border-color: #403a60;
-}
-
-.dropdown-item {
-  font-family: "Nunito", sans-serif;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #403a60;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-.dropdown-item a::after {
-  content: "";
-  color: #403a60;
-  border-bottom: 3px solid #403a60;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  transform: translateY(10px);
-  transition: transform 0.3s ease;
-  opacity: 0;
-  height: 100%;
-  width: 100%;
-}
-
-.dropdown-item a:hover::after {
-  color: #403a60;
-  opacity: 1;
-  transform: translateY(0);
-}
-
+ 
 .logo {
   margin: 10px;
   height: 80px;
@@ -299,6 +261,8 @@ header p {
 
  
 .chatbox input{
+  border: 2px solid rgba($dark-red, .5);
+  border-radius: 4px;
   width: 87%; 
   padding-top: 4px;
   padding-bottom: 6px;
@@ -313,7 +277,6 @@ header p {
 ul{
   list-style: none;
 }
- 
 
 section {
   padding-top: 20px;
@@ -322,18 +285,36 @@ section {
   width: 95vw;
 }
  
-footer {
+.article-img {
+  height: 125px; 
+  width: 125px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.media {
+  display: flex;  
+  align-items: flex-end; 
+
+}
+ 
+footer {  
+  flex-shrink: 0;
+  text-align:center;
+  // position: absolute;
+  bottom: 0;
+  width: 100%;
   color: #f9a17d;
-  background-color: #403a60;
-  padding: 100px;
+  background-color: $dark-base;
+  padding: 20px;
 }
 
 footer a {
-  color: #f9a17d;
+  color: rgba(255,255,255, .8);
 }
-
+ 
 footer a:hover {
-  color: #f9a17d;
+  color: rgba(255,255,255, .8);
   text-decoration: underline;
 }
 
@@ -353,24 +334,49 @@ footer ul li {
 section, article, aside, footer, header, nav {
   display: block;
 }
+  
+.channels-mobile{
+  display: none;
+}
 
 @media only screen and (max-width: 575px) {
-  #home_room{
-    margin-top: 10px;
-    height: 50vh;
+  body{
+    font-size: .8em;
   }
+  .navbar-brand {
+    font-size: 1.2em;
+  }  
+
+  h3{
+    font-size: 1em;
+  }
+
+  #chatroom{
+    height: 60vh;
+  }
+ 
   .chatbox input{
+    border: 2px solid rgba($dark-red, .5);
+    border-radius: 4px;
     width: 70%;
     display: inline;
   }
   
+  .channels{
+    display: none;
+  }
+
+  .channels-mobile{
+    display: block;
+  }
 
   .logo-lg {
     max-height: 100px;
   }
-
-  h1 {
-    font-size: 1.5rem;
+ 
+  footer { 
+    margin:5px;
   }
+
 }
 

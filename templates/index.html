@@ -1,18 +1,11 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <script>
-        var room = `{{ room }}`;
-        var username = `{{ username|e }}`; 
-        localStorage.setItem('room', room);  
-        localStorage.setItem('username', username);
-    </script>
-
     <main role="main" class="container">
         <div class="row">
         <div class="col-md-9">
                                 
-            {% if not username %}
+        {% if not username %}
             <h2 class="m-2"> Welcome to Flack</h2>
             <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
             
@@ -26,7 +19,7 @@
 
                     <div class="form-group">
                         <select class="form-control btn" name="room" autofocus aria-haspopup="true" aria-expanded="false"> 
-                            <option class="dropdown-item" id="dropdown" disabled="" selected="" value="">Select a Channel</option>
+                            <option class="dropdown-item" id="dropdown" disabled selected="" value="" >Select a Channel</option>
                             {% for room in rooms %}
                                     <option id="room"> {{ room|title }} </option>
                             {% endfor %}
@@ -42,78 +35,68 @@
                 <div class="m-2 form-group"> </div>
 
                 <div class="form-group">
-                <button id="submit" class="btn btn-info" type="submit" disabled >Register</button>
+                <button id="submit" class="btn" type="submit" disabled >Register</button>
                 </div>
 
-            </form>
-            
-            <div class="m-5"> </div>
+            </form> 
+        {% endif %}  
 
-            <script>
-            
-            document.addEventListener('DOMContentLoaded', () => {
-                
-                var username = document.querySelector('#username');
-                username.addEventListener("keyup", submitFunction);
-                document.addEventListener('click', submitFunction);
-                document.addEventListener('keyup', submitFunction);
-                
-                function submitFunction() {
-                        if (username.value === ''){
-                            document.querySelector('#submit').disabled = true;
-                        }
-                        else {
-                            document.querySelector('#submit').disabled = false;
-                        }
-                };
-
-            });
-
-            </script>  
-
-            {% endif %}  
-
-            {% if error %} 
+        {% if error %} 
             <p class="error hide_me">
                 {{ error }}
             </p>
-            {% endif %}
+        {% endif %}
 
-            {% if username %}  
-             
+        {% if username %}   
             <div class="m-3"> </div>
-
-
             <div id="chatroom">
-            
-
             </div> 
 
             <div class="m-3"> </div>
 
             <div id="form" class="chatbox">
                     <input autocomplete="off" autofocus id="chat" class=" " placeholder=" ..." type="text">
-                    <button class="btn btn-info" id="send_chat">send</button>
+                    <button class="btn" id="send_chat">send</button>
             </div>
             
-            <div class="m-2"> </div>
+             
 
-    
-            </div>
-            <div class="col-md-3">
-                <div class="content-section">
-                    <h3>Channels</h3> 
+        </div>
+
+            <div class="col-md-3 ">
+            <div class="m-3"> </div>
+            <div class="content-section" >
+
+                <div class="channels">
+                    <h3 >Channels</h3> 
                         <ul class="list-group">
-                            {% for room in rooms %}
-                                <li class="list-group-item select_room">{{ room|title }}</li>
-                            {% endfor %}
-                            <!-- Button trigger modal -->
-                            <li class="list-group-item" id="createroom" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
+                        {% for room in rooms %}
+                            <li class="list-group-item select_room">{{ room|title }}</li>
+                        {% endfor %}
+                        <!-- Button trigger modal -->
+                        <li class="list-group-item" id="createroom" type="button" class="btn" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
                         </ul>
                 </div>
+
+                <!-- Channel selection for Mobile -->
+                <div class="dropdown channels-mobile" >
+                <h3 class="dropdown-toggle" data-toggle="dropdown" >Channels</h3> 
+                    <ul class=" dropdown-menu">
+                        {% for room in rooms %}
+                            <li class="list-group-item select_room dropdown-item">{{ room|title }}</li>
+                        {% endfor %}
+                        <!-- Button trigger modal -->
+                        <li class="list-group-item" id="createroom" type="button" class="btn dropdown-item" data-toggle="modal" data-target="#exampleModal"> Create new channel </li>
+                    </ul>
+                </div>
+               
+            </div>
             </div> 
 
-            
+
+            <div class="m-3"> </div>
+
+
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -136,20 +119,85 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button   type="submit" class="btn btn-primary">Submit</button>
+                            <button   type="submit" class="btn">Submit</button>
                         </div>
                         </form>
                     </div>
             </div>
             </div>
+ 
+        {% endif %}
 
-            <scrip>
+       
+    </div>
+    </main>   
+{% endblock %}
 
-            </script>
-            {% endif %}
+{% block script %} 
 
-        </div>
-    </main> 
-     
+    <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // store session data
+        let room = `{{ room }}`;
+        let username = `{{ username|e }}`; 
+        let image_file = `{{ image_file }}`;
+
+        if (!localStorage.getItem('room')) {
+            localStorage.setItem('room', room); 
+            }; 
+
+        if (!localStorage.getItem('username')) {
+            localStorage.setItem('username', username);  
+            };
+
+        if (!localStorage.getItem('image_file')) {
+            localStorage.setItem('image_file', image_file); 
+            };
+
+
+        // listen for values and enable register button
+        let username_button = document.querySelector('#username');
+        let channel = document.querySelector('select');        
+        if (username_button) {
+            username_button.addEventListener("keyup", submitFunction);
+        };
+        if (channel) {
+            channel.addEventListener("change", submitFunction);
+        };
+         
+        function submitFunction() {
+                if (username_button.value === '' || channel.options[channel.selectedIndex].value == ''){
+                    console.log(channel.options[channel.selectedIndex].value);
+                    document.querySelector('#submit').disabled = true;
+                }
+                else {
+                    document.querySelector('#submit').disabled = false;
+                }
+        };
+
+        // scroll chatroom to bottom in case there's a lot of messages
+        let messageBody = document.querySelector('#chatroom');
+        if (messageBody) {
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        };
+
+
+        // trigger chat button click with enter key 
+        input = document.querySelector('#chat');  
+        if (input) {
+            input.addEventListener("keyup", event => {
+                // Number 13 is the "Enter" key on the keyboard
+                if (event.keyCode === 13) { 
+                    document.querySelector('#send_chat').click();
+                };
+            }); 
+        };
+
+
+    });
+ 
+    </script>  
+
 
 {% endblock %}

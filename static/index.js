@@ -3,91 +3,91 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let room = localStorage.getItem('room');  
     let username = localStorage.getItem('username');
-    // console.log(username)
-    // console.log(room)
-
-    // scroll chatroom to bottom in case there's a lot of messages
-    var messageBody = document.querySelector('#chatroom');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-
-    // trigger chat button click with enter key 
-    input = document.querySelector('#chat');  
-    input.addEventListener("keyup", event => {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) { 
-            document.querySelector('#send_chat').click();
-        };
-    });
-
-
+    let image_file = localStorage.getItem('image_file');
+    let messageBody = document.querySelector('#chatroom');
+   
     // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    let socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-        // on connect, send message to server
+        // on connect, send message to server 
         socket.on('connect', () => {
             room = localStorage.getItem('room');
-            socket.emit('connect to room', {'msg': ' has joined ', 'room': room});
+            username = localStorage.getItem('username');
+            image_file = localStorage.getItem('image_file');
+            socket.emit('connect to room', {'msg': ' has joined ', 'username': username, 'room': room, 'image_file': image_file});
         });
 
         // listen for send message from server and append to chatroom
         socket.on('message', data => {  
             if (data.messages) {
                 messages = data.messages;
-                if (messages.length > 1) {     
-                    console.log(messages)
+                if (messages.length > 1) {      
                     messages.forEach(message => { 
                         if (message.chat) { 
-                            var span_date = document.createElement('span');
+                            let span_date = document.createElement('span');
                             span_date.classList.add("date");
-                            var span_username = document.createElement('span');
+                            let img = document.createElement('img');
+                            img.classList.add('chatimg');
+                            img.alt = "Users profile image";
+                            img.src = message.image_file;
+                            let span_username = document.createElement('span');
                             span_username.classList.add("username");
-                            var p = document.createElement('p');
-                            var chat_space = ": ";
+                            let p = document.createElement('p');
+                            let chat_space = ": ";
                             span_date.innerHTML = message.timestamp;
                             span_username.innerHTML = message.username;
-                            p.innerHTML = span_date.outerHTML  + span_username.outerHTML + chat_space + message.chat;
+                            p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + message.chat;
                             messageBody.append(p);
                             messageBody.scrollTop = messageBody.scrollHeight;
                         };
                     });
-                    }; 
-                };
-
-            var span_date = document.createElement('span');
-            span_date.classList.add("date");
-            var span_username = document.createElement('span');
-            span_username.classList.add("username");
-            var p = document.createElement('p');
-            var chat_space = ": ";
-            span_date.innerHTML = data.timestamp;
-            span_username.innerHTML = data.username;
-        
-            if (data.msg) {    
-                p.classList.add("sysmessage");
-                p.innerHTML = span_date.outerHTML  + span_username.outerHTML + data.msg + data.room;
-            }
-            else if (data.chat) {
-                p.innerHTML = span_date.outerHTML  + span_username.outerHTML + chat_space + data.chat;
-            }
-            else {
-                p.classList.add("sysmessage");
-                p.innerHTML = span_date.outerHTML  + span_username.outerHTML + data.sysmsg + data.room;;
-            }
-            messageBody.append(p);
-            messageBody.scrollTop = messageBody.scrollHeight;
+                }; 
+            };
+            if (messageBody) {
+                let span_date = document.createElement('span');
+                span_date.classList.add("date");
+                let img = document.createElement('img');
+                img.classList.add('chatimg');
+                img.alt = "Users profile image";
+                img.src = data.image_file;
+                let span_username = document.createElement('span');
+                span_username.classList.add("username");
+                let p = document.createElement('p');
+                let chat_space = ": ";
+                span_date.innerHTML = data.timestamp;
+                span_username.innerHTML = data.username;
+            
+                if (data.msg) {    
+                    p.classList.add("sysmessage");
+                    p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + data.msg + data.room;
+                }
+                else if (data.chat) {
+                    p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + data.chat;
+                }
+                else {
+                    p.classList.add("sysmessage");
+                    p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + data.sysmsg + data.room;;
+                }
+                messageBody.append(p);
+                messageBody.scrollTop = messageBody.scrollHeight;
+            };
         });
 
         // when chat send button clicked
-        document.querySelector('#send_chat').onclick = () => {
+        let chat_button = document.querySelector('#send_chat');
+        if (chat_button) {
+            chat_button.onclick = () => {
             chat = document.querySelector('#chat').value;
             room = localStorage.getItem('room');  
             if (chat.length > 0) {    
-                socket.emit('send chat', {'chat': chat, 'room': room});
+                socket.emit('send chat', {'chat': chat, 'room': room, 'image_file': image_file});
                 document.querySelector('#chat').value = '';
                 document.querySelector('#chat').placeholder = ' ...'; 
                 return false;
+                };
             };
         };
+        
         
         // when room button clicked, get room name, leave old and join new
         document.querySelectorAll('.select_room').forEach(li => {
@@ -95,31 +95,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 let newRoom = li.innerHTML; 
                 if (newRoom == room) {
                     msg = `You're already in ${room}`;
-                    var p = document.createElement('p');
+                    let p = document.createElement('p');
                     p.classList.add("sysmessage");
                     p.innerHTML = msg;
                     messageBody.append(p);
+                    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
                 } else {
                     messageBody.innerHTML = '';
-                    socket.emit('leave', {'username': username, 'room': room});
-                    socket.emit('join', {'username': username, 'room': newRoom});
+                    socket.emit('leave', {'username': username, 'room': room, 'image_file': image_file});
+                    socket.emit('join', {'username': username, 'room': newRoom, 'image_file': image_file});
                     localStorage.setItem('room', newRoom); 
                     room = newRoom;
-                }
-            }
+                };
+            };
                     
         });
 
-
-
-         // when createroom button clicked, get room name, leave old and join new
-        document.querySelector('#createroom').onclick = () => {
+        // when createroom button clicked, get room name and leave old room
+        let new_channel_button =  document.querySelector('#createroom');
+        if (new_channel_button) {
+            new_channel_button.onclick = () => {
                 room = localStorage.getItem('room');
-                socket.emit('leave', {'username': username, 'room': room}); 
-            }
-        
-
-
+                socket.emit('leave', {'username': username, 'room': room, 'image_file': image_file}); 
+            };
+        };
+    
 
 });
  

@@ -11,6 +11,7 @@
     <!-- socketio js file -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
+
     
     <title>Flack</title>
 </head>
@@ -20,7 +21,7 @@
         <nav class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark fixed-top">
                 <div class="container">
-                    <a class="navbar-brand mr-4" href="/"> Flack Messaging</a>
+                    <a class="navbar-brand mr-4" href="{{ url_for('index') }}"> Flack Messaging</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                             aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -30,11 +31,11 @@
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
-                           {% if username %}
-                            <a class="nav-item nav-link" href="{{ url_for('account') }}">Profile</a>
-                            <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            {% if username %}
+                                <a class="nav-item nav-link" href="{{ url_for('account') }}">Profile</a>
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}   
-                            <a class="nav-item nav-link" href="{{ url_for('index') }}">Login / Register</a>
+                                <a class="nav-item nav-link" href="{{ url_for('index') }}">Login / Register</a>
                             {% endif %}
                         </div>
                     </div>
@@ -42,9 +43,15 @@
             </nav>
         </nav>
         
-         {% block body  %}
-       
-        {% endblock %}
+    {% block body  %} 
+    {% endblock %}
+    <footer>
+    Flack Chat App created by <a href="http://marycasserly.com">Mary</a>. 
+    Project <a href="https://docs.cs50.net/web/2020/x/projects/2/project2.html">specs</a> 
+    from Harvard's CS50W <a href="https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/">course</a> via EdX.
+    Default Profile images from:
+    <a href="https://www.freepik.com/free-photos-vectors/people">freepik</a>.
+    </footer>
         <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -56,6 +63,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-</body>
 
+    {% block script  %}
+    {% endblock %}  
+
+</body>       
 </html>

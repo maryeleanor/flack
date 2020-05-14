@@ -19,7 +19,7 @@ and then I used the command: heroku ps:scale web=1
     // };
 
     // //connect to websocket
-    // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    // let socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
 
     // when form submitted
@@ -51,3 +51,25 @@ and then I used the command: heroku ps:scale web=1
     // }
 
 
+
+
+ if request.method == "POST":
+        if request.files:
+            
+            # print(request.cookies)
+
+            image = request.files['image']
+
+            ext = allowed_img(image.filename)
+            if not ext:
+                print("Filetype not allowed")
+                error = "Filetype not allowed"
+                return render_template("account.html", username=username, error=error)
+
+            filename = secure_filename(session['username'] + '-img.' + ext)
+
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+
+            print(image)
+            success = "successfully uploaded"
+            return render_template("account.html", username=username, success=sucess)
