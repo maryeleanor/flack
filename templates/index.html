@@ -6,39 +6,37 @@
         <div class="col-md-9">
                                 
         {% if not username %}
-            <h2 class="m-2"> Welcome to Flack</h2>
-            <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
-            
             <div class="m-5"> </div>   
+            <div class="content-section">
+                <h2 class="m-2"> Welcome to Flack</h2>
+                <h6 class="m-2"><i> a chat app like slack built with flask </i></h6>
+                
+                <div class="m-5"> </div>   
+                
+                <h5 class="m-2"> Select a channel and enter a username to get started: </h5>
+                
+                <form action="/" method="post" class="m-2 login">
             
-            <h5 class="m-2"> Select a channel and enter a username to get started: </h5>
-            
-            <form action="/" method="post" class="m-2 login">
-            
-                <div class="m-4 form-group"> </div>  
-
+                    <div class="m-4 form-group"> </div>  
+                        <div class="form-group">
+                            <select class="form-control btn" name="room" autofocus aria-haspopup="true" aria-expanded="false"> 
+                                <option class="dropdown-item" id="dropdown" disabled selected="" value="" >Select a Channel</option>
+                                {% for room in rooms %}
+                                        <option id="room"> {{ room|title }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                            
+                    <div class="m-2 form-group"> </div>
                     <div class="form-group">
-                        <select class="form-control btn" name="room" autofocus aria-haspopup="true" aria-expanded="false"> 
-                            <option class="dropdown-item" id="dropdown" disabled selected="" value="" >Select a Channel</option>
-                            {% for room in rooms %}
-                                    <option id="room"> {{ room|title }} </option>
-                            {% endfor %}
-                        </select>
+                        <input id="username" autocomplete="off" class="form-control" name="username" placeholder="Username" type="text">
                     </div>
-                        
-                <div class="m-2 form-group"> </div>
-
-                <div class="form-group">
-                    <input id="username" autocomplete="off" class="form-control" name="username" placeholder="Username" type="text">
-                </div>
-
-                <div class="m-2 form-group"> </div>
-
-                <div class="form-group">
-                <button id="submit" class="btn" type="submit" disabled >Register</button>
-                </div>
-
-            </form> 
+                    <div class="m-2 form-group"> </div>
+                    <div class="form-group">
+                        <button id="submit" class="btn" type="submit" disabled >Register</button>
+                    </div>
+                </form> 
+            </div>
         {% endif %}  
 
         {% if error %} 
@@ -135,9 +133,18 @@
 
 {% block script %} 
 
+
+    {% if new_channel %}
+        <script>
+        let newroom = `{{ room }}`;
+        localStorage.setItem('room', newroom);
+        </script>
+    {% endif %}
+
     <script>
 
     document.addEventListener('DOMContentLoaded', () => {
+
         // store session data
         let room = `{{ room }}`;
         let username = `{{ username|e }}`; 

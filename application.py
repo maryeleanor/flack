@@ -27,6 +27,7 @@ def index():
 
         # if user clicked create new channel
         if request.form.get("channel"):
+            new_channel = True;
             room = request.form.get("channel")
             room = room.capitalize()
             username = None
@@ -37,16 +38,18 @@ def index():
             if room in rooms:
                 error = 'That room already exists.'
                 session["room"] = room 
-                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, error=error)
+                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, error=error, new_channel=new_channel)
             else:
                 rooms.append(room)
                 messages.update({room: deque(maxlen=100)})
                 session["room"] = room
-                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages)
+                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, new_channel=new_channel)
 
         #get username and room from form
         username = request.form.get("username")
         room = request.form.get("room")
+        if not room:
+            room = 'Home'
          
         # remember user and room choice
         session["username"] = username
