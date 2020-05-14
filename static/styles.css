@@ -64,6 +64,9 @@ option {
 }
 
 .error {
+  margin-top: 20px;
+  margin-bottom: -18px;
+  max-height: 40px;
   background-color: rgba(222, 93, 93, 0.6);
   font-weight: bold;
   padding: 20px;

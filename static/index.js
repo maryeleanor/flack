@@ -11,14 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // on connect, send message to server 
         socket.on('connect', () => {
-            room = localStorage.getItem('room');
-            username = localStorage.getItem('username');
-            image_file = localStorage.getItem('image_file');
+            if (room == 'None'){
+                room = 'Home';
+            };
             socket.emit('connect to room', {'msg': ' has joined ', 'username': username, 'room': room, 'image_file': image_file});
         });
 
         // listen for send message from server and append to chatroom
         socket.on('message', data => {  
+            if (data.room == 'None'){
+                current_room = localStorage.getItem('room');
+            } else { 
+                current_room = data.room;
+            };
             if (data.messages) {
                 messages = data.messages;
                 if (messages.length > 1) {      
@@ -59,14 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
                 if (data.msg) {    
                     p.classList.add("sysmessage");
-                    p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + data.msg + data.room;
+                    p.innerHTML = span_date.outerHTML + img.outerHTML + span_username.outerHTML + data.msg + current_room;
                 }
                 else if (data.chat) {
                     p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + data.chat;
                 }
                 else {
                     p.classList.add("sysmessage");
-                    p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + data.sysmsg + data.room;;
+                    p.innerHTML = span_date.outerHTML + img.outerHTML + span_username.outerHTML + data.sysmsg + current_room;
                 }
                 messageBody.append(p);
                 messageBody.scrollTop = messageBody.scrollHeight;

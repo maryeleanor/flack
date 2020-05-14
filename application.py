@@ -30,6 +30,8 @@ def index():
             new_channel = True;
             room = request.form.get("channel")
             room = room.capitalize()
+            if room == 'None' or room == 'Create new channel':
+                room = 'Home'
             username = None
             if 'username' in session:
                 username = session["username"]
@@ -94,6 +96,8 @@ def connection(data):
     timestamp = strftime('%b %d, %I:%M %p', localtime())
     msg = data["msg"]
     room = data["room"]
+    if room == 'None' or room == 'Create new channel':
+            room = 'Home'
     join_room(room)
 
     if room in rooms:
@@ -121,6 +125,8 @@ def chat(data):
     image_file = session["image_file"] 
     chat = data["chat"]
     room = data["room"]
+    if room == 'None' or room == 'Create new channel':
+            room = 'Home'
     timestamp = strftime('%b %d, %I:%M %p', localtime())
     room_messages = messages[room]
     row = {'username': username, 'image_file': image_file, 'timestamp': timestamp, 'chat': chat, 'room':room}
