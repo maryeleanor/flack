@@ -194,7 +194,7 @@ def account():
                     error = "Filetype not allowed"
                     return render_template("account.html", username=username, error=error)
 
-                filename = secure_filename(session['username'] + image.filename)
+                filename = secure_filename(session['username'] + "-" + image.filename)
                 image.save(os.path.join(app.root_path, 'static/imgs/', filename))
                 success = "successfully uploaded"
                 image_file = url_for('static', filename="imgs/" + filename)
