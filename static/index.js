@@ -5,7 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let username = localStorage.getItem('username');
     let image_file = localStorage.getItem('image_file');
     let messageBody = document.querySelector('#chatroom');
-   
+    
+    // convert dates from server
+    function convertTime(serverdate) {
+      var date = new Date(serverdate);
+      // convert to utc time
+      var utc = date.toUTCString();
+      //convert to local datetime
+      var datetime = new Date(utc + " UTC");
+      // convert to local string style  
+      var localdate = datetime.toLocaleString("en-US");
+      return localdate;
+    }
+
     // Connect to websocket
     let socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -19,20 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // listen for send message from server and append to chatroom
         socket.on('message', data => {  
-            console.log(data.username);
-            console.log(localStorage.getItem("username"));
-            console.log(data.room);
             let current_room;
+            let localDate = convertTime(data.timestamp);
+
             if (!data.room){
                 current_room = localStorage.getItem('room');
             } else {
                 current_room = data.room;
             }
             
+
             if (data.messages && data.username == localStorage.getItem('username')) {
-                console.log(data.messages);
-                console.log(data.username);
-                console.log(username);
                 messages = data.messages;
                 if (messages.length > 1) {      
                     messages.forEach(message => { 
@@ -41,13 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             span_date.classList.add("date");
                             let img = document.createElement('img');
                             img.classList.add('chatimg');
+                            img.classList.add("rounded-circle");
                             img.alt = "Users profile image";
                             img.src = message.image_file;
                             let span_username = document.createElement('span');
                             span_username.classList.add("username");
                             let p = document.createElement('p');
                             let chat_space = ": ";
-                            span_date.innerHTML = message.timestamp;
+                            span_date.innerHTML = convertTime(message.timestamp);
                             span_username.innerHTML = message.username;
                             p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + message.chat;
                             messageBody.append(p);
@@ -61,13 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 span_date.classList.add("date");
                 let img = document.createElement('img');
                 img.classList.add('chatimg');
+                img.classList.add('rounded-circle');
                 img.alt = "Users profile image";
                 img.src = data.image_file;
                 let span_username = document.createElement('span');
                 span_username.classList.add("username");
                 let p = document.createElement('p');
                 let chat_space = ": ";
-                span_date.innerHTML = data.timestamp;
+                span_date.innerHTML = localDate;
                 span_username.innerHTML = data.username;
             
                 if (data.msg) {    
