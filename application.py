@@ -9,6 +9,7 @@ from flask_session import Session
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") 
 app.config["SESSION_TYPE"] = "filesystem" 
 app.config["ALLOWED_IMAGE_EXENSIONS"] = ["PNG", "JPG", "JPEG", "GIF", "SVG"] 
@@ -24,6 +25,8 @@ rooms = ["Home", "News", "Another Room"]
 def index():
     # if user submitted via form
     if request.method == "POST":
+        username = 'Test'
+        room = 'Home'
 
         # if user clicked create new channel
         if request.form.get("channel"):
@@ -68,7 +71,7 @@ def index():
     username = None
     if 'username' in session:
         username = session["username"]
-    room = None 
+    room = 'Home' 
     if 'room' in session:
         room = session["room"] 
     
