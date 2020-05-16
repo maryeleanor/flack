@@ -50,9 +50,7 @@ def index():
         #get username and room from form
         username = request.form.get("username")
         room = request.form.get("room")
-        if room == 'None' or room == 'Create new channel':
-            room = 'Home'
-         
+        
         # remember user and room choice
         session["username"] = username
         session["room"] = room
@@ -92,13 +90,17 @@ def connection(data):
     image_file = None
     if 'image_file' in session:
         image_file = session["image_file"] 
-    
+    room = None
+    if 'room' in session:
+        room = session['room']
+    join_room(room)    
+
     timestamp = strftime('%b %d, %I:%M %p', localtime())
     msg = data["msg"]
-    room = data["room"]
-    if room == 'None' or room == 'Create new channel':
-            room = 'Home'
-    join_room(room)
+    # room = data["room"]
+    # if room == 'None' or room == 'Create new channel':
+    #         room = 'Home'
+    
 
     if room in rooms:
         room_messages = messages[room]
@@ -139,10 +141,13 @@ def chat(data):
 def join(data):
     username = session['username']
     image_file = session["image_file"] 
-    room = data['room']
     timestamp = strftime('%b %d, %I:%M %p', localtime())
     sysmsg = " has entered "
+    room = data['room']
+    if room == 'None' or room == 'Create new channel':
+            room = 'Home'
     join_room(room)
+    
     if room in rooms:
         room_messages = messages[room]
         row = {'username': username, 'image_file': image_file, 'timestamp': timestamp, 'sysmsg': sysmsg, 'room':room}
@@ -196,12 +201,12 @@ def account():
             if image:
                 if (int(request.cookies['filesize']) > app.config["MAX_IMG_SIZE"]): 
                     error = "Image file is too large"
-                    return render_template("account.html", username=username, error=error)
+                    return render_template("account.html", username=username, error=error, image_file=image_file)
 
                 ext = allowed_img(image.filename)
                 if not ext:
                     error = "Filetype not allowed"
-                    return render_template("account.html", username=username, error=error)
+                    return render_template("account.html", username=username, error=error, image_file=image_file)
 
                 filename = secure_filename(session['username'] + "-" + image.filename)
                 image.save(os.path.join(app.root_path, 'static/imgs/', filename))
@@ -214,7 +219,7 @@ def account():
             session["username"] = username
             return render_template("account.html", username=username, image_file=image_file)
 
-    # route account page
+    # return account page
     return render_template("account.html", username=username, image_file=image_file)
 
 

@@ -1,14 +1,15 @@
 
 $dark-base: #345995;
 $dark-red: #de5d5d; 
+$background: #e2afaf38;
+$old-background: rgba($dark-red, .2);
 // $old-dark-base: #403A60;
 
 
 body {
   display: flex;
   flex-direction: column;
-  background-color: rgba($dark-red, .2);
-  // position: relative;
+  background-color:$background; 
   height: 100%;
   font-family: "Nunito", sans-serif;
 }
@@ -75,10 +76,10 @@ option{
 .error{
   margin-top: 20px;
   margin-bottom: -18px;
-  max-height: 40px;
+  max-height: 60px;
   background-color: rgba($dark-red, .6);
   font-weight: bold;
-  padding: 20px;
+  padding: 10px;
   border-radius: 4px;
 }
 
@@ -260,7 +261,6 @@ header p {
 
 .profile .form-group{ 
   display: inline;
-  width: 30%; 
 }
 
  
@@ -363,7 +363,7 @@ section, article, aside, footer, header, nav {
     border: 2px solid rgba($dark-red, .5);
     border-radius: 4px;
     width: 70%;
-    display: inline;
+    display: inline-block;
   }
   
   .channels{

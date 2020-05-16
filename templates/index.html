@@ -118,7 +118,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button   type="submit" class="btn">Submit</button>
+                            <button id="modalsubmit" type="submit" class="btn" disabled>Submit</button>
                         </div>
                         </form>
                     </div>
@@ -151,18 +151,9 @@
         let username = `{{ username|e }}`; 
         let image_file = `{{ image_file }}`;
 
-        if (!localStorage.getItem('room')) {
-            localStorage.setItem('room', room); 
-            }; 
-
-        if (!localStorage.getItem('username')) {
-            localStorage.setItem('username', username);  
-            };
-
-        if (!localStorage.getItem('image_file')) {
-            localStorage.setItem('image_file', image_file); 
-            };
-
+        localStorage.setItem('room', room); 
+        localStorage.setItem('username', username);  
+        localStorage.setItem('image_file', image_file); 
 
         // listen for values and enable register button
         let username_button = document.querySelector('#username');
@@ -182,6 +173,19 @@
                 else {
                     document.querySelector('#submit').disabled = false;
                 }
+        };
+
+        let channel_input = document.querySelector('#channel');
+        if (channel_input) {
+            channel_input.addEventListener("keyup", modalSubmit);
+        };
+
+        function modalSubmit(){
+            if (channel_input.value == ''){
+                document.querySelector('#modalsubmit').disabled = true;
+            } else {
+                document.querySelector('#modalsubmit').disabled = false;
+            }
         };
 
         // scroll chatroom to bottom in case there's a lot of messages

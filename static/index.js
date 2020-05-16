@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // on connect, send message to server 
         socket.on('connect', () => {
-            if (room == 'None'){
+            if (!room){
                 room = 'Home';
             };
             socket.emit('connect to room', {'msg': ' has joined ', 'username': username, 'room': room, 'image_file': image_file});
@@ -19,12 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // listen for send message from server and append to chatroom
         socket.on('message', data => {  
-            if (data.room == 'None'){
+            console.log(data.username);
+            console.log(localStorage.getItem("username"));
+            console.log(data.room);
+            let current_room;
+            if (!data.room){
                 current_room = localStorage.getItem('room');
-            } else { 
+            } else {
                 current_room = data.room;
-            };
-            if (data.messages) {
+            }
+            
+            if (data.messages && data.username == localStorage.getItem('username')) {
+                console.log(data.messages);
+                console.log(data.username);
+                console.log(username);
                 messages = data.messages;
                 if (messages.length > 1) {      
                     messages.forEach(message => { 

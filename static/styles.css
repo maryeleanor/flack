@@ -1,7 +1,7 @@
 body {
   display: flex;
   flex-direction: column;
-  background-color: rgba(222, 93, 93, 0.2);
+  background-color: #e2afaf38;
   height: 100%;
   font-family: "Nunito", sans-serif;
 }
@@ -66,10 +66,10 @@ option {
 .error {
   margin-top: 20px;
   margin-bottom: -18px;
-  max-height: 40px;
+  max-height: 60px;
   background-color: rgba(222, 93, 93, 0.6);
   font-weight: bold;
-  padding: 20px;
+  padding: 10px;
   border-radius: 4px;
 }
 
@@ -249,7 +249,6 @@ header p {
 
 .profile .form-group {
   display: inline;
-  width: 30%;
 }
 
 .chatbox input {
@@ -350,7 +349,7 @@ section, article, aside, footer, header, nav {
     border: 2px solid rgba(222, 93, 93, 0.5);
     border-radius: 4px;
     width: 70%;
-    display: inline;
+    display: inline-block;
   }
 
   .channels {
