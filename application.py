@@ -2,6 +2,7 @@ import os
 import functools
 import random
 import datetime
+import time
 # from time import localtime, strftime
 from collections import deque
 from flask import Flask, render_template, url_for, jsonify, request, session, redirect, flash
@@ -99,7 +100,7 @@ def connection(data):
         room = session['room']
     join_room(room)    
 
-    timestamp = str(datetime.datetime.now())
+    timestamp = time.time()
     msg = data["msg"]
     # room = data["room"]
     # if room == 'None' or room == 'Create new channel':
@@ -133,8 +134,8 @@ def chat(data):
     room = data["room"]
     if room == 'None' or room == 'Create new channel':
             room = 'Home'
-    timestamp = str(datetime.datetime.now())
-#    timestamp = strftime('%b %d, %I:%M %p', localtime())
+
+    timestamp = time.time()
     room_messages = messages[room]
     row = {'username': username, 'image_file': image_file, 'timestamp': timestamp, 'chat': chat, 'room':room}
     room_messages.append(row)
@@ -146,7 +147,7 @@ def chat(data):
 def join(data):
     username = session['username']
     image_file = session["image_file"] 
-    timestamp = str(datetime.datetime.now())
+    timestamp = time.time()
     sysmsg = " has entered "
     room = data['room']
     if room == 'None' or room == 'Create new channel':
@@ -176,7 +177,7 @@ def leave(data):
     username = data['username']
     image_file = session["image_file"] 
     room = data['room']
-    timestamp = str(datetime.datetime.now())
+    timestamp = time.time()
     sysmsg = " has left "
     leave_room(room)
     send({'sysmsg': sysmsg, 'username': username, 'image_file': image_file, 'timestamp': timestamp, 'room': room}, room=room)

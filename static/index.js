@@ -8,14 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // convert dates from server
     function convertTime(serverdate) {
-      var date = new Date(serverdate);
-      // convert to utc time
-      var utc = date.toUTCString();
-      //convert to local datetime
-      var datetime = new Date(utc + " UTC");
-      // convert to local string style  
-      var localdate = datetime.toLocaleString("en-US");
-      return localdate;
+        console.log(serverdate)
+        var utcSeconds = serverdate;
+        // The 0 there is the key, which sets the date to the epoch
+        var d = new Date(0);   
+        d.setUTCSeconds(serverdate);
+        console.log(d.toLocaleString());
+        localdate = d.toLocaleString();
+        return localdate;
     }
 
     // Connect to websocket
