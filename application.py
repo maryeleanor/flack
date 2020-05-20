@@ -26,8 +26,8 @@ rooms = ["Home", "News", "Another Room"]
 def index():
     # if user submitted via form
     if request.method == "POST":
-        username = 'Test'
-        room = 'Home'
+        # username = 'Test'
+        # room = 'Home'
 
         # if user clicked create new channel
         if request.form.get("channel"):
