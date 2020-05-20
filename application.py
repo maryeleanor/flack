@@ -2,8 +2,7 @@ import os
 import functools
 import random
 import datetime
-import time
-# from time import localtime, strftime
+import time 
 from collections import deque
 from flask import Flask, render_template, url_for, jsonify, request, session, redirect, flash
 from flask_socketio import SocketIO, emit, disconnect, join_room, leave_room, close_room, rooms, send
@@ -95,18 +94,13 @@ def connection(data):
     image_file = None
     if 'image_file' in session:
         image_file = session["image_file"] 
-    room = None
-    if 'room' in session:
-        room = session['room']
+    room = data["room"]
+    session['room'] = room
     join_room(room)    
 
     timestamp = time.time()
     msg = data["msg"]
-    # room = data["room"]
-    # if room == 'None' or room == 'Create new channel':
-    #         room = 'Home'
     
-
     if room in rooms:
         room_messages = messages[room]
         row = {'username': username, 'image_file': image_file, 'timestamp': timestamp, 'msg': msg, 'room':room}
@@ -132,8 +126,9 @@ def chat(data):
     image_file = session["image_file"] 
     chat = data["chat"]
     room = data["room"]
-    if room == 'None' or room == 'Create new channel':
-            room = 'Home'
+    session['room'] = room
+    # if room == 'None' or room == 'Create new channel':
+    #         room = 'Home'
 
     timestamp = time.time()
     room_messages = messages[room]
@@ -150,8 +145,9 @@ def join(data):
     timestamp = time.time()
     sysmsg = " has entered "
     room = data['room']
-    if room == 'None' or room == 'Create new channel':
-            room = 'Home'
+    session['room'] = room
+    # if room == 'None' or room == 'Create new channel':
+    #         room = 'Home'
     join_room(room)
     
     if room in rooms:
