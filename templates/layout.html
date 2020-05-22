@@ -34,7 +34,7 @@
                         <div class="navbar-nav">
                             {% if username %}
                                 <a class="nav-item nav-link" href="{{ url_for('account') }}">Profile</a>
-                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                                <a class="nav-item nav-link logout" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}   
                                 <a class="nav-item nav-link" href="{{ url_for('index') }}">Login / Register</a>
                             {% endif %}

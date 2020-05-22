@@ -20,15 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     // on connect, send message to server 
-    socket.on('connect', () => { 
-        socket.emit('connect to room', {'msg': ' has joined ', 'username': username, 'room': room, 'image_file': image_file});
+    socket.on('connect', () => {
+        if (room && username && room !== 'None') {
+            socket.emit('connect to room', { 'msg': ' has joined ', 'username': username, 'room': room, 'image_file': image_file});
+        };
     });
 
     // listen for send message from server and append to chatroom
     socket.on('message', data => {  
         let localDate = convertTime(data.timestamp);
-
-        if (data.messages && data.room == room) {
+        
+        if (data.messages && data.room === room && data.username === username) {
             messages = data.messages;
             if (messages.length > 1) {      
                 messages.forEach(message => { 
@@ -53,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }; 
         };
+
         if (messageBody) {
             let span_date = document.createElement('span');
             span_date.classList.add("date");
@@ -68,17 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             span_date.innerHTML = localDate;
             span_username.innerHTML = data.username;
         
-            if (data.msg) {    
+            if (data.sysmsg) {    
                 p.classList.add("sysmessage");
-                p.innerHTML = span_date.outerHTML + img.outerHTML + span_username.outerHTML + data.msg + data.room;
-            }
-            else if (data.chat) {
-                p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + data.chat;
+                p.innerHTML = span_date.outerHTML + img.outerHTML + span_username.outerHTML + data.sysmsg + room;
             }
             else {
-                p.classList.add("sysmessage");
-                p.innerHTML = span_date.outerHTML + img.outerHTML + span_username.outerHTML + data.sysmsg + data.room;
+                p.innerHTML = span_date.outerHTML  + img.outerHTML + span_username.outerHTML + chat_space + data.chat;
             }
+          
             messageBody.append(p);
             messageBody.scrollTop = messageBody.scrollHeight;
         };
@@ -128,6 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
         new_channel_button.onclick = () => {
             room = localStorage.getItem('room');
             socket.emit('leave', {'username': username, 'room': room, 'image_file': image_file}); 
+        };
+    };
+
+
+    // when logout button clicked, clear all local storage
+    let logout_button = document.querySelector('.logout');
+    if (logout_button) {
+        logout_button.onclick = () => {
+            localStorage.clear();
         };
     };
 

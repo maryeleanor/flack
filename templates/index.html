@@ -52,9 +52,7 @@
 
         {% if username %}   
             <div class="m-4"> </div>
-            <div id="chatroom">
-            </div> 
-
+            <div id="chatroom"></div> 
             <div class="m-3"> </div>
 
             <div id="form" class="chatbox">
@@ -63,7 +61,7 @@
             </div>
             
              
-
+        <!-- end col-md-9 div section -->
         </div>
 
             <div class="col-md-3">
@@ -107,8 +105,6 @@
 
             <div class="m-3"> </div>
 
-
-
             <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -139,8 +135,9 @@
  
         {% endif %}
 
-       
+    <!-- end row -->
     </div>
+    <!-- end main -->
     </main>   
 {% endblock %}
 
@@ -158,7 +155,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
-        // store session data
+        // store session data in local browser storage
         let room = `{{ room }}`;
         let username = `{{ username|e }}`; 
         let image_file = `{{ image_file }}`;
@@ -167,7 +164,7 @@
         localStorage.setItem('username', username);  
         localStorage.setItem('image_file', image_file); 
 
-        // listen for values and enable register button
+        // listen for values to run submit function
         let username_button = document.querySelector('#username');
         let channel = document.querySelector('select');        
         if (username_button) {
@@ -176,22 +173,28 @@
         if (channel) {
             channel.addEventListener("change", submitFunction);
         };
-         
+
+        // function to enable register button if both values are inputted by user
         function submitFunction() {
                 if (username_button.value === '' || channel.options[channel.selectedIndex].value == ''){
-                    console.log(channel.options[channel.selectedIndex].value);
                     document.querySelector('#submit').disabled = true;
                 }
                 else {
                     document.querySelector('#submit').disabled = false;
+                    room = channel.options[channel.selectedIndex].value;
+                    username = username_button.value;
+                    localStorage.setItem('room', room);
+                    localStorage.setItem('username', username); 
                 }
         };
 
+        // listen for new channel input on modal
         let channel_input = document.querySelector('#channel');
         if (channel_input) {
             channel_input.addEventListener("keyup", modalSubmit);
         };
 
+        // if user enters a new channel name, enable modal submit button
         function modalSubmit(){
             if (channel_input.value == ''){
                 document.querySelector('#modalsubmit').disabled = true;
