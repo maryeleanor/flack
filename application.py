@@ -45,14 +45,14 @@ def index():
             if room in rooms:
                 error = 'That room already exists.'
                 session["room"] = room 
-                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, error=error, new_channel=new_channel)
+                return render_template("index.html", username=username, room=room, rooms=rooms, error=error, new_channel=new_channel)
 
             # if not, add to rooms array and messages dict    
             else:
                 rooms.append(room)
                 messages.update({room: deque(maxlen=100)})
                 session["room"] = room
-                return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, new_channel=new_channel)
+                return render_template("index.html", username=username, room=room, rooms=rooms, new_channel=new_channel)
 
         #get username and room from form
         username = request.form.get("username")
@@ -72,7 +72,7 @@ def index():
             session["image_file"] = image_file
     
         # redirect back to home page   
-        return render_template("index.html", username=username, room=room, rooms=rooms, messages=messages, image_file=image_file)
+        return render_template("index.html", username=username, room=room, rooms=rooms, image_file=image_file)
  
     # user reached route via GET, has not yet submitted any of the forms
     username = None
@@ -106,12 +106,8 @@ def connection(data):
     if 'room' in session:
         room = session["room"]
 
-    # join room
     join_room(room)    
-
-    # get timestamp 
     timestamp = time.time()
-    # get system message
     sysmsg = data["msg"]
         
     # if new room, add to rooms array and messages dict     
@@ -120,48 +116,35 @@ def connection(data):
         rooms.append(room)
         messages.update({room: deque(maxlen=100)})
 
-    # pass in curreent room messages as list   
+    # pass in current room messages as list   
     current_room_messages = list(messages[room])
-    # send all to client
     send({'sysmsg': sysmsg, 'username': username, 'image_file': image_file, 'timestamp': timestamp, 'room': room, 'messages': current_room_messages}, room=room)
 
 # when 'Send chat' button is clicked
 @socketio.on('send chat')
 def chat(data):
-    # get userneame and image from session
     username = session["username"]
     image_file = session["image_file"] 
-    # get chat and room from client
     chat = data["chat"]
     room = data["room"]
-    # save room in session in case different
     session['room'] = room
-    # get timestamp
     timestamp = time.time()
-    # add chat message to room_messages dict
     room_messages = messages[room]
     row = {'username': username, 'image_file': image_file, 'timestamp': timestamp, 'chat': chat, 'room':room}
     room_messages.append(row)
     messages[room] = room_messages
-    # send chat back to clients
     send({'chat': chat, 'username': username, 'image_file': image_file, 'timestamp': timestamp, 'room': room}, room=room)
   
 
 # if room button clicked
 @socketio.on('join')
 def join(data):
-    # get username amd image from session 
     username = session['username']
     image_file = session["image_file"] 
-    # get timestamp
     timestamp = time.time()
-    # set system message
     sysmsg = " has entered "
-    # get current room to join from client data
     room = data['room']
-    # save room in session
     session['room'] = room
-    # join room
     join_room(room)
     
     # if new room, add to rooms array and messages dict     
@@ -231,8 +214,11 @@ def account():
                 session["image_file"] = image_file 
 
             # if users entered an updated username, save in session
-            username = request.form.get("username")
-            session["username"] = username
+            new_username = request.form.get("username")
+            if new_username:
+                username = new_username
+                session["username"] = username
+       
             success = "successfully updated"
 
             # return profile page with success

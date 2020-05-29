@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('message', data => {  
         let localDate = convertTime(data.timestamp);
         
-        if (data.messages && data.room === room && data.username === username) {
+        if (data.messages && data.room === room) {
             messages = data.messages;
             if (messages.length > 1) {      
                 messages.forEach(message => { 
