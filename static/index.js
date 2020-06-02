@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // listen for send message from server and append to chatroom
     socket.on('message', data => {  
+        
+        // convert time from server to local time
         let localDate = convertTime(data.timestamp);
         
+        // if messages list sent, print out all room messagesin chatroom
         if (data.messages && data.room === room) {
             messages = data.messages;
             if (messages.length > 1) {      
@@ -56,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }; 
         };
 
+        // print message from socket send data into chatroom
         if (messageBody) {
             let span_date = document.createElement('span');
             span_date.classList.add("date");
