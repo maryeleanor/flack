@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // convert time from server to local time
         let localDate = convertTime(data.timestamp);
         
-        // if messages list sent, print out all room messagesin chatroom
-        if (data.messages && data.room === room) {
+        // if messages list sent, print out all room messages in chatroom
+        if (data.messages && data.room == room && data.username == username) {
             messages = data.messages;
             if (messages.length > 1) {      
                 messages.forEach(message => { 
