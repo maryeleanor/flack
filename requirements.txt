@@ -16,7 +16,7 @@ MarkupSafe==1.1.1
 monotonic==1.5
 python-engineio==3.12.1
 python-socketio==4.5.1
-requests==2.23.0
+requests==2.32.4
 six==1.14.0
 urllib3==1.26.5
 Werkzeug==0.15.5
